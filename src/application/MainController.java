@@ -58,14 +58,6 @@ public class MainController implements Initializable{
 	public void btnExpenses(ActionEvent e) throws IOException {
 		if ( currPage != Page.EXPENSES) {
 			
-//			// Fetches transactions from db, for all expense transactions, calls ExpenseController.addTransaction.
-			try {
-				this.homeController.FetchTransactions();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} 
-			
 			contentArea.getChildren().removeAll();
 			contentArea.getChildren().setAll(this.expenseRoot);
 			currPage = Page.EXPENSES;
@@ -76,14 +68,6 @@ public class MainController implements Initializable{
 	public void btnIncome(ActionEvent e) throws IOException{
 		if ( currPage != Page.INCOME) {
 			
-			// Fetches transactions from db, for all expense transactions, calls ExpenseController.addTransaction.
-			try {
-				this.homeController.FetchTransactions();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} 
-			
 			contentArea.getChildren().removeAll();
 			contentArea.getChildren().setAll(this.incomeRoot);
 			currPage = Page.INCOME;		
@@ -93,15 +77,6 @@ public class MainController implements Initializable{
 	
 	public void btnTransaction(ActionEvent e) throws IOException{
 		if ( currPage != Page.TRANSACTIONS) {	
-			
-			// Fetches all transactions from db and populates Transactions page.
-			try {
-				this.transactionController.PopulateTransactions();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} 
-			
 			
 			contentArea.getChildren().removeAll();
 			contentArea.getChildren().setAll(this.transactionRoot);
@@ -127,7 +102,7 @@ public class MainController implements Initializable{
 		currBtn = b;
 	}
 	
-	public void setModel(Model m) {
+	public void setModel(Model m) throws SQLException {
 		this.model = m;
 		if(this.homeController != null) {//Set The Home controller's Database model And set Observers
 			this.homeController.setModel(m);
@@ -142,6 +117,7 @@ public class MainController implements Initializable{
 			this.transactionController.setModel(m);
 			this.model.attachOberver(transactionController);
 		}
+		DBConn.FetchTransactions(expenseController, incomeController, transactionController);
 	}
 	
 	public Model getModel() {

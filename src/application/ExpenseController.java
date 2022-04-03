@@ -31,6 +31,16 @@ public class ExpenseController implements View, Initializable{
 	private TreeItem<Category> root = new TreeItem<Category>(rootCategory );
 	
 	private Model model;
+	
+	private Boolean fetched = false;
+	
+	public Boolean isFetched() {
+		return this.fetched;
+	}
+	
+	public void setFetched() {
+		this.fetched = true;
+	}
 
 	
 	@Override

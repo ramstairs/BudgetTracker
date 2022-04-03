@@ -30,6 +30,16 @@ public class IncomeController implements View, Initializable{
 	
 	private Model model;
 	
+	private Boolean fetched = false;
+	
+	public Boolean isFetched() {
+		return this.fetched;
+	}
+	
+	public void setFetched() {
+		this.fetched = true;
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		root.setExpanded(true);

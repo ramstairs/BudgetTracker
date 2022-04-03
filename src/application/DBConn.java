@@ -31,6 +31,42 @@ public class DBConn {
 			}
 		}
 		
+		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
+		public static void FetchTransactions(ExpenseController expCon, IncomeController incCon, TransactionsController transCon) throws SQLException {
+			System.out.println("Fetching Transactions from database...");
+			
+			Statement st = DBConn.getConn().createStatement(); // Allows us to specify a command to the database in a string with SQL language, then execute it.
+			
+			// Select the Transactions table in its entirety and put the results in ResultSet res.
+			// Using the .executeQuery("SQL commands...") on our Statement st, we send an SQL command or "query" to the database.
+			ResultSet res = st.executeQuery("SELECT * FROM TRANSACTIONS");
+			
+			while (res.next()) { // Loop through all of the rows in the ResultSet taken from the table... (1 row = 1 transaction)
+				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
+				
+				String title = res.getString("Name"); 
+				Double price = res.getDouble("Transval");
+				String strPrice = String.valueOf(price); 
+				Date sqldate = res.getDate("Date"); // sql.Date data type which is used by the database.
+				LocalDate date = sqldate.toLocalDate(); // LocalDate which is used in our application.
+				String category = res.getString("Category");
+				String subcategory = res.getString("Subcategory");
+				String transType = res.getString("TransactionType");
+				
+				if (transType.equals("EXPENSE")) {
+					Transaction newTrans = new Transaction(title, price, date, TransactionType.EXPENSE);
+					expCon.addTransaction(category, subcategory, newTrans);
+					transCon.addTransaction(category, subcategory, newTrans);
+				}
+				
+				else if (transType.equals("INCOME")) {
+					Transaction newTrans = new Transaction(title, price, date, TransactionType.INCOME);
+					incCon.addTransaction(category, subcategory, newTrans);
+					transCon.addTransaction(category, subcategory, newTrans);
+				}
+			}
+		}
+		
 		// Adds a new transaction to the MySQL Database in the table of transactions.
 		public static void AddTransToDB(Transaction trans, String category, String subcategory) throws SQLException {
 			try {
