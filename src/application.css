@@ -1,0 +1,88 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/*
+#btnHome{
+	#This Line is commented -fx-graphic: url(imgs/home.png) ;   btnHome*
+	-fx-background-image: url(imgs/home.png) ;
+    -fx-background-size: 18px 16px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+#homeIcon:hover{
+	#This Line is commented -fx-background-image: url(imgs/homeA.png) ;
+	-fx-image: url(imgs/homeA.png) ; 
+    -fx-background-size: 18px 16px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+*/
+
+
+.navItem{
+	-fx-background-color: #FFFFFF;
+}
+.navItem:hover{
+	-fx-background-color: #C3E5ED;
+/*	-fx-border-color:#1199B7;
+	-fx-border-width: 0px 0px 0px 3px;*/
+	-fx-text-fill: #1199B7;
+	-fx-font-weight: bold;
+}
+
+.container{
+	-fx-background-radius: 20px;
+	-fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.3), 10, 0.2 , 0.0 , 0.0);
+}
+
+.choice-box {
+/* -fx-background-color: #FFFFFF;
+  -fx-background-radius: 20px;
+  -fx-border-color: #EFEFEF;
+  -fx-border-width: 0.5px;
+  -fx-border-radius: 20px; */ 
+  -fx-mark-color: #1199B7; /* arrow color*/ 
+  -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.3), 10, 0.5 , 0.0 , 0.0);
+}
+/* Background color of the whole context menu */
+.choice-box .context-menu { -fx-background-color: #FFFFFF; }
+/* Focused item background color in the list*/ 
+.choice-box .menu-item:focused { -fx-background-color: #23B5D6; }
+/*  Text color of non-focused items in the list*/
+.choice-box .menu-item > .label { -fx-text-fill: black; }
+/*  Text color of focused item in the list*/
+.choice-box .menu-item:focused > .label { -fx-text-fill: #FFFFFF; }
+/*Selected item text color on the control itself */
+.choice-box > .label { -fx-text-fill: black; }
+
+#AddTransactionBtn{
+	-fx-background-color: #1199B7;
+	-fx-border-radius: 30px ;
+	-fx-text-fill: #FFFFFF;
+	-fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.3), 10, 0.1 , 0.0 , 0.0);
+}
+#AddTransactionBtn:hover{
+	-fx-background-color: #23B5D6;
+	-fx-border-radius: 30px;
+}
+#AddTransactionBtn:pressed{
+	-fx-background-color: #0D819A;
+}
+.recentTransactionItem{
+	-fx-border-color: #DADADA;
+	-fx-border-style: solid hidden solid hidden;
+	-fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.3), 10, 0.2 , 0.0 , 0.0);
+	-fx-background-color: #FFFFFF;
+}
+.recentTransactionItem:hover{
+	-fx-background-color: #DADADA;
+}
+
+.transactionItem{
+	
+	-fx-border-color: #DADADA;
+	-fx-background-color: #FFFFFF;
+	/*-fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.3), 10, 0.2 , 0.0 , 0.0);*/
+}
+
+.transactionItem:hover{
+	-fx-background-color: #DADADA;
+}

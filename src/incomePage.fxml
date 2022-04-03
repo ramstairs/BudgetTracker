@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+
+<TreeTableView fx:id="incomeTreeTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.IncomeController">
+	<columns>
+        <TreeTableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="100.0" text="Category" />
+        <TreeTableColumn fx:id="colJan" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Jan" />
+        <TreeTableColumn fx:id="colFeb" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Feb" />
+        <TreeTableColumn fx:id="colMar" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Mar" />
+        <TreeTableColumn fx:id="colApr" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Apr" />
+        <TreeTableColumn fx:id="colMay" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="May" />
+        <TreeTableColumn fx:id="colJun" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Jun" />
+		<TreeTableColumn fx:id="colJul" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Jul" />
+        <TreeTableColumn fx:id="colAug" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Aug" />
+        <TreeTableColumn fx:id="colSep" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Sep" />
+        <TreeTableColumn fx:id="colOct" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Oct" />
+        <TreeTableColumn fx:id="colNov" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Nov" />
+        <TreeTableColumn fx:id="colDec" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="35.0" text="Dec" />
+        <TreeTableColumn fx:id="colTotal" maxWidth="1.7976931348623157E308" minWidth="30.0" prefWidth="60.0" text="Total" />
+		<TreeTableColumn fx:id="colAvg" maxWidth="1.7976931348623157E308" minWidth="19.0" prefWidth="60.0" text="Avg" />
+	</columns>
+</TreeTableView>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root maxWidth="750.0" minWidth="480.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="-1.0" maxWidth="750.0" minHeight="20.0" minWidth="200.0" styleClass="transactionItem">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <children>
+            <VBox alignment="CENTER" maxWidth="750.0" minHeight="20.0">
+               <children>
+                  <HBox alignment="CENTER" maxWidth="750.0" minHeight="20.0" minWidth="560.0" spacing="35.0">
+                     <children>
+                        <CheckBox fx:id="transactionCheck" alignment="CENTER" contentDisplay="CENTER" maxWidth="25.0" minWidth="0.0" mnemonicParsing="false" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets left="5.0" right="-30.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <Label fx:id="transactionTitle" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Title" textAlignment="CENTER" wrapText="true">
+                           <HBox.margin>
+                              <Insets right="-20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="transactionType" alignment="CENTER" contentDisplay="CENTER" maxWidth="45.0" minWidth="0.0" prefWidth="44.0" text="Expense" wrapText="true" />
+                        <Label fx:id="transactionCategory" alignment="CENTER" contentDisplay="CENTER" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Category" wrapText="true" />
+                        <Label fx:id="transactionSubcategory" alignment="CENTER" contentDisplay="CENTER" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" text="Subcategory" wrapText="true" />
+                        <Label fx:id="transactionAmmount" alignment="CENTER" contentDisplay="CENTER" maxWidth="54.0" minWidth="54.0" prefWidth="54.0" text="Value" wrapText="true" />
+                        <Label fx:id="transactionDate" alignment="CENTER" contentDisplay="RIGHT" maxWidth="65.0" minWidth="65.0" prefWidth="65.0" text="Date" wrapText="true" />
+                        <ImageView fx:id="deleteBtn" fitHeight="12.0" fitWidth="12.0" onMouseClicked="#deleteTransaction" pickOnBounds="true" preserveRatio="true" styleClass="deleteBtn">
+                           <image>
+                              <Image url="@../Images/delete.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="3.0" right="3.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </children>
+</fx:root>
