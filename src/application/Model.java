@@ -1,5 +1,6 @@
 package application;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,13 +84,14 @@ public class Model {
 		this.notifyObservers();
 	}
 	
-	public void removeTransaction(String c, String sc, Transaction transaction) {// This is added 
+	public void removeTransaction(String c, String sc, Transaction transaction) throws SQLException {// This is added 
 		ArrayList<Category> scList = this.subCategory.get(c);
 		for(Category el: scList) {
 			if(el.getName() == sc) {
 				el.removeTransaction(transaction);
 			}
 		}
+		DBConn.RemoveTransFromDB(transaction, c, sc);
 		this.notifyObservers();
 	}
 	

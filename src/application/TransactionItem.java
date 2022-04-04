@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javafx.fxml.FXML;
@@ -70,12 +71,19 @@ public class TransactionItem extends AnchorPane{
 		return this.transaction;
 	}
 	
+	public String getCategory() {
+		return this.category;
+	}
+	
+	public String getSubcategory() {
+		return this.subCategory;
+	}
+	
 	@FXML
-	private void deleteTransaction() {
+	private void deleteTransaction() throws SQLException {
 		System.out.println("Deleting: "+ this.title+ ", under:" + this.subCategory+ "...");
 		//String t, TransactionType ty, String c, String sc, LocalDate d, String amm
 		this.transCntrl.deleteTransaction(this);
-		
 	}
 	private String adjustAmmount(String amm) {
 		int ammLen = amm.length();

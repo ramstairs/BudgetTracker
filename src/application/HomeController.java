@@ -12,6 +12,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -248,23 +249,28 @@ public class HomeController implements View, Initializable{
 		        }
 		    }
 		});
-		//Initlize the left to spend Field
-		monthlyBudgetField.setText("0");
+		//Initialize the left to spend Field
+		monthlyBudgetField.setText(String.valueOf(DBConn.FetchBudget(LocalDate.now().getMonth(), this))); // Set this to the value in the the Budget table for the current month.
 		monthlyBudgetField.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
 		        if (!newValue.matches("\\d*")) {
-		        	monthlyBudgetField.setText(newValue.replaceAll("[^\\d]", "") );	//Integers not doubles
+		        	monthlyBudgetField.setText(newValue.replaceAll("[^\\d]", "") );	//Integers not doubles.
 
 		        }else if(newValue.matches("\\d*")){
-		        	setMonthlyBudget();
+		        	try {
+						setMonthlyBudget();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 //		        	System.out.println("monthlyBudgetField Updating");
 		        }
 		    }
 		});
 		
-		//Inilizing categories with their corresponding options
+		//Initializing categories with their corresponding options.
 		//Expense Options
 		options.put("Children", Children);
 		options.put("Debt", Debt);
@@ -285,7 +291,7 @@ public class HomeController implements View, Initializable{
 		options.put("Wages", Wages);
 		options.put("Other Income", incomeOther);
 		
-		//Initializing predetermined List of Catagories to the dropdown
+		//Initializing predetermined List of Categories to the drop-down menu.
 		setCategoryDropDown();
 
 		//Setting the date field to the current date of the machine
@@ -302,11 +308,23 @@ public class HomeController implements View, Initializable{
 	}
 	
 	@FXML
-	private void setMonthlyBudget() {
+	private void setMonthlyBudget() throws InterruptedException {
 		//This function responsible for setting the "Monthly Budget" field
-		this.monthlyBudget = Double.parseDouble( monthlyBudgetField.getText() );
-		setLeftToSpendField();
+		this.monthlyBudget = Double.valueOf(monthlyBudgetField.getText());
+		
+		DBConn.AddBudgetToDB(LocalDate.now().getMonth(), this.monthlyBudget); // Update the budget amount for the current month in the Budgets table.
+		
+		setLeftToSpendField(); // Update the LeftToSpend Field based on the budget value.
 	}
+	
+	public Double getMonthlyBudget() {
+		return this.monthlyBudget;
+	}
+	
+	public void setMonthlyBudget(Double d) {
+		this.monthlyBudget = d;
+	}
+	
 	//This function responsible for setting the "Left To Spend" field
 	private void setLeftToSpendField() {
 		
@@ -339,9 +357,10 @@ public class HomeController implements View, Initializable{
 			value = expenseController.getRootCategory().getDec();
 		}
 		
-		this.leftToSpend = (monthlyBudget-value);
+		this.leftToSpend = (this.monthlyBudget - value);
 		
 		leftToSpendField.setText( String.valueOf(this.leftToSpend));
+		
 		try {
 			//Updating the Progress Bar (Budget Meter)
 			if(0<= (int) Math.round(this.leftToSpend/monthlyBudget)) {
@@ -355,8 +374,10 @@ public class HomeController implements View, Initializable{
 		}catch(Exception e) {
 			
 		}
-
-		
+	}
+	
+	public Double getLeftToSpend() {
+		return this.leftToSpend;
 	}
 	
 	@FXML

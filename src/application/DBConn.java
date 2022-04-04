@@ -10,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 	
 public class DBConn {
 		
@@ -67,6 +70,38 @@ public class DBConn {
 			}
 		}
 		
+		// Fetches the Budget that was set for the month passed in.
+		// Used in setting the Budget text field in initialization of the Home Page in the HomeController.
+		public static Double FetchBudget(Month month, HomeController hc) {
+			
+			Double budget = 0.0;
+			Boolean budgetFound = false;
+			try {
+				Statement st = DBConn.getConn().createStatement();
+				ResultSet rs = st.executeQuery("SELECT * FROM BUDGETS"); // Create a ResultSet object holding all rows.
+				
+				while (rs.next()) {
+					if (rs.getInt("MonthNum") == month.getValue())
+					{
+						budget = rs.getDouble("Budget");
+						budgetFound = true;
+					}
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (budgetFound = true) {
+				hc.setMonthlyBudget(budget);
+				return budget;
+			}
+			else { 
+				hc.setMonthlyBudget(0.0);
+				return 0.0;
+			}
+		}
+		
 		// Adds a new transaction to the MySQL Database in the table of transactions.
 		public static void AddTransToDB(Transaction trans, String category, String subcategory) throws SQLException {
 			try {
@@ -88,7 +123,56 @@ public class DBConn {
 				System.out.println("Transaction: " + trans.getName() + " has been added to the Database.");
 			}	
 		}
-
+		
+		public static void RemoveTransFromDB(Transaction trans, String category, String subcategory) throws SQLException {
+			try {
+				Statement st = DBConn.getConn().createStatement(); // Allows us to specify a command to the database in a string with SQL language, then execute it.
+				
+				// Select the Transactions table in its entirety and put the results in ResultSet res.
+				// Using the .executeQuery("SQL commands...") on our Statement st, we send an SQL command or "query" to the database.
+				ResultSet res = st.executeQuery("SELECT * FROM TRANSACTIONS");
+				
+				while (res.next()) { // Loop through all of the rows in the ResultSet taken from the table... (1 row = 1 transaction)
+					// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
+					String title = res.getString("Name"); 
+					Double price = res.getDouble("Transval");
+					Date sqldate = res.getDate("Date"); // sql.Date data type which is used by the database.
+					LocalDate date = sqldate.toLocalDate(); // LocalDate which is used in our application.
+					String cat = res.getString("Category");
+					String subcat = res.getString("Subcategory");
+					String transType = res.getString("TransactionType");
+					
+					// If the current transaction matches all attributes of the transaction we're deleting...
+					if (title.equals(trans.getName()) && price.equals(trans.getValue()) && date.equals(trans.getDate()) && category.equals(cat) && subcategory.equals(subcat) && transType.equals(trans.getTransType())) {
+						String query = "DELETE FROM Transactions WHERE TRANSID =" + res.getInt("TransID");
+						PreparedStatement st2 = DBConn.getConn().prepareStatement(query);
+						st2.execute();
+						System.out.println("Transaction: " + trans.getName() + ", with ID: " + res.getInt("TransID") + " has been deleted from the Database.");
+					}
+				}
+			} catch (SQLException e) { 
+				System.out.println("An error occured while trying to delete the transaction from the Database.");
+			}
+		}
+		
+		public static void AddBudgetToDB(Month month, Double budget) {
+			try {
+				String query = "UPDATE Budgets set Budget = ? where MonthNum = ?";
+				
+				PreparedStatement st = getConn().prepareStatement(query);
+				
+				st.setDouble(1, budget);
+				
+				st.setInt(2, month.getValue());
+				
+				st.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		// Searches the local database file for a specific table. Returns false if not found.
 		public static Boolean checkForTable(String name) throws SQLException {
 			
@@ -118,6 +202,47 @@ public class DBConn {
 					" PRIMARY KEY ( TransID ))";
 			
 			st.executeUpdate(sql); // Execute the SQL statement in our database.
+		}
+		
+		// Creates a Budget table in the local H2 database.
+		public static void createBudgetTable() throws SQLException {
+			Statement st = getConn().createStatement();
+			// SQL statement to create a Budget table to hold user data.
+			String sql = "CREATE TABLE Budgets " +
+					"( MonthNum INTEGER NOT NULL, " +
+					" MonthName VARCHAR(255) NOT NULL, " +
+					" Budget DOUBLE NOT NULL, " +
+					" PRIMARY KEY ( MonthNum ))";
+			st.executeUpdate(sql); // Execute the SQL statement in our database.
+			
+			for (int i = 1; i <= 12; i++)
+			{
+				String query = "INSERT INTO Budgets (MonthNum, MonthName, Budget)" + " values (?, ?, ?)";
+				PreparedStatement st2 = getConn().prepareStatement(query);
+				st2.setInt(1, i);
+				st2.setString(2, Month.of(i).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+				st2.setDouble(3, 0.0);
+				st2.execute(); // Execute the SQL statement in our database.
+			}
+		}
+		
+		// Parent function to check for all necessary tables (Transactions & Budget), and creates them if they don't exist.
+		public static void tableSetUp() throws SQLException {
+			
+			if (DBConn.checkForTable("TRANSACTIONS") == true) { // Transactions table already in database.
+				System.out.println("Previous Transaction record found in database...");	
+			}
+			else { // No Transactions table in database, create one using createTransTable().
+				DBConn.createTransTable();
+				System.out.println("Transactions record created in database.");
+			}
+			if (DBConn.checkForTable("BUDGETS") == true) { // Transactions table already in database.
+				System.out.println("Previous Budget record found in database...");
+			}
+			else { // No Transactions table in database, create one using createTransTable().
+				DBConn.createBudgetTable();
+				System.out.println("Budget record created in database.");
+			}
 		}
 }
 

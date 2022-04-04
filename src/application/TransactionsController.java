@@ -78,7 +78,7 @@ public class TransactionsController implements View, Initializable{
 		TransactionItemList.add(newTransactionItem);
 	}
 
-	public void deleteTransaction(TransactionItem transactionItem) {
+	public void deleteTransaction(TransactionItem transactionItem) throws SQLException {
 		//Called only from transactionItem class (controller)
 		TransactionItemList.remove(transactionItem);
 		this.model.removeTransaction(transactionItem.category, transactionItem.subCategory, transactionItem.getTransaction());

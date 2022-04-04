@@ -52,16 +52,7 @@ public class Main extends Application {
 	public static void main(String[] args) throws SQLException {
 		
 		DBConn.ConnectToDB(); // Establish a connection to the database upon startup.
-		
-		if (DBConn.checkForTable("TRANSACTIONS") == true) { // Transactions table already in database.
-			System.out.println("Previous Transaction record found in database...");
-			
-		}
-		else { // No Transactions table in database, create one using createTransTable().
-			DBConn.createTransTable();
-			System.out.println("Transactions record created in database.");
-		}
-		
+		DBConn.tableSetUp();
 		launch(args);
 	}
 }
