@@ -89,6 +89,18 @@ public class HomeController implements View, Initializable{
 	
 	BigDecimal progressValue = new BigDecimal(String.format("%.2f", 0.0));
 	
+	// Sets the list of recent transactions and the related visual elements to the 10 most recent fetched from the DB.
+	// Called in AddTransaction() after the transaction is added to the DB.
+	public void updateRecentTrans() throws SQLException {
+		
+		recentList = DBConn.FetchRecents(); // Grabs 10 most recent transactions from Transactions table.
+		recentTransactionsList.getChildren().clear(); // Clear previous list of most recent transactions.
+		
+		for (RecentTransaction r : recentList) { // Set the children of the recentTransactionsList to the new list.
+			recentTransactionsList.getChildren().add(r);
+		}
+	}
+	
 	// Sets the private field recentCategories, the list of the most recent categories spent in.
 	private void setRecentCats() {
 		
@@ -116,7 +128,7 @@ public class HomeController implements View, Initializable{
 	}
 	
 	@FXML
-	private void addTransaction() {
+	private void addTransaction() throws SQLException {
 		//Get the data
 		String title = titleField.getText();
 		String price = numField.getText();
@@ -140,17 +152,20 @@ public class HomeController implements View, Initializable{
 			Transaction newTransaction = new Transaction(title, Double.parseDouble(price), date, typeTransaction);
 			//Adding it to the list of Transactions
 			this.transactionsController.addTransaction(category, subCategory, newTransaction);
+			
+			updateRecentTrans(); // Set the recent transactions to the updated 10 newest.
+			
 			//Adding the Transaction to Income Sheet:
 			if(typeTransaction == TransactionType.INCOME) {
 				incomeController.addTransaction(category, subCategory, newTransaction);
-				recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.INCOME, price, date));//Adding to the recent transactions menu
-			}//Adding the Transaction to Expesne Sheet:
+				//recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.INCOME, price, date));//Adding to the recent transactions menu
+			}//Adding the Transaction to Expense Sheet:
 			else if (typeTransaction == TransactionType.EXPENSE) {
 				expenseController.addTransaction(category, subCategory, newTransaction);
-				recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.EXPENSE , price, date));//Adding to the recent transactions menu
+				//recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.EXPENSE , price, date));//Adding to the recent transactions menu
 			}
 
-			//Clear the fields while keeping the date and the catagory
+			//Clear the fields while keeping the date and the category
 			titleField.clear();
 			numField.clear();
 			
@@ -325,8 +340,7 @@ public class HomeController implements View, Initializable{
 		this.monthlyBudget = d;
 	}
 	
-	//This function responsible for setting the "Left To Spend" field
-	private void setLeftToSpendField() {
+	public void setLeftToSpend() {
 		
 		Month currMonth = LocalDate.now().getMonth();
 		Double value = 0.0;
@@ -357,7 +371,43 @@ public class HomeController implements View, Initializable{
 			value = expenseController.getRootCategory().getDec();
 		}
 		
-		this.leftToSpend = (this.monthlyBudget - value);
+		this.leftToSpend = (monthlyBudget - value);
+	}
+	
+	//This function responsible for setting the "Left To Spend" field
+	public void setLeftToSpendField() {
+		
+		Month currMonth = LocalDate.now().getMonth();
+		Double value = 0.0;
+		
+		if(currMonth==Month.JANUARY) {
+			value = expenseController.getRootCategory().getJan();
+		}else if(currMonth==Month.FEBRUARY) {
+			value = expenseController.getRootCategory().getFeb();
+		}else if(currMonth==Month.MARCH) {
+			value = expenseController.getRootCategory().getMar();
+		}else if(currMonth==Month.APRIL) {
+			value = expenseController.getRootCategory().getApr();
+		}else if(currMonth==Month.MAY) {
+			value = expenseController.getRootCategory().getMay();
+		}else if(currMonth==Month.JUNE) {
+			value = expenseController.getRootCategory().getJun();
+		}else if(currMonth==Month.JULY) {
+			value = expenseController.getRootCategory().getJul();
+		}else if(currMonth==Month.AUGUST) {
+			value = expenseController.getRootCategory().getAug();
+		}else if(currMonth==Month.SEPTEMBER) {
+			value = expenseController.getRootCategory().getSep();
+		}else if(currMonth==Month.OCTOBER) {
+			value = expenseController.getRootCategory().getOct();
+		}else if(currMonth==Month.NOVEMBER) {
+			value = expenseController.getRootCategory().getNov();
+		}else if(currMonth==Month.DECEMBER) {
+			value = expenseController.getRootCategory().getDec();
+		}
+		
+		// Set LeftToSpend to the current budget - current expenditure this month.
+		this.leftToSpend = (monthlyBudget - value);
 		
 		leftToSpendField.setText( String.valueOf(this.leftToSpend));
 		
@@ -389,7 +439,7 @@ public class HomeController implements View, Initializable{
 		TransactionType typeTransaction = getTransactionType();
 		if(typeTransaction == TransactionType.INCOME) {
 			categoryField.getItems().addAll(incomeCategoryList);
-		}//Adding the Transaction to Expesne Sheet:
+		}//Adding the Transaction to Expense Sheet:
 		else if (typeTransaction == TransactionType.EXPENSE) {
 			categoryField.getItems().addAll(expenseCategoryList);
 		}

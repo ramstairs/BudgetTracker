@@ -2,6 +2,7 @@ package application;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -94,7 +95,7 @@ public class Model {
 		DBConn.RemoveTransFromDB(transaction, c, sc);
 		this.notifyObservers();
 	}
-	
+
 	public void attachOberver(View o) {
 		Observers.add(o);
 	}

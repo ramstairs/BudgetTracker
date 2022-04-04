@@ -119,7 +119,7 @@ public class MainController implements Initializable{
 			this.model.attachOberver(transactionController);
 		}
 		DBConn.FetchTransactions(expenseController, incomeController, transactionController);
-		
+		homeController.updateRecentTrans();
 	}
 	
 	public Model getModel() {

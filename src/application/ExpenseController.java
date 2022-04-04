@@ -3,6 +3,8 @@ package application;
 
 import java.util.ArrayList;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -31,17 +33,6 @@ public class ExpenseController implements View, Initializable{
 	private TreeItem<Category> root = new TreeItem<Category>(rootCategory );
 	
 	private Model model;
-	
-	private Boolean fetched = false;
-	
-	public Boolean isFetched() {
-		return this.fetched;
-	}
-	
-	public void setFetched() {
-		this.fetched = true;
-	}
-
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -258,6 +249,39 @@ public class ExpenseController implements View, Initializable{
 		// add the subcategory under the category
 		categoryTreeItem.getChildren().add(subCategory);
 	}
+	
+	// Returns the total value of a month's expenses.
+//	public Double monthlyExpenses(int m) { 
+//		Month currMonth = LocalDate.now().getMonth();
+//		Double value = 0.0;
+//		
+//		if(currMonth==Month.JANUARY) {
+//			value = this.getRootCategory().getJan();
+//		}else if(currMonth==Month.FEBRUARY) {
+//			value = this.getRootCategory().getFeb();
+//		}else if(currMonth==Month.MARCH) {
+//			value = this.getRootCategory().getMar();
+//		}else if(currMonth==Month.APRIL) {
+//			value = this.getRootCategory().getApr();
+//		}else if(currMonth==Month.MAY) {
+//			value = this.getRootCategory().getMay();
+//		}else if(currMonth==Month.JUNE) {
+//			value = this.getRootCategory().getJun();
+//		}else if(currMonth==Month.JULY) {
+//			value = this.getRootCategory().getJul();
+//		}else if(currMonth==Month.AUGUST) {
+//			value = this.getRootCategory().getAug();
+//		}else if(currMonth==Month.SEPTEMBER) {
+//			value = this.getRootCategory().getSep();
+//		}else if(currMonth==Month.OCTOBER) {
+//			value = this.getRootCategory().getOct();
+//		}else if(currMonth==Month.NOVEMBER) {
+//			value = this.getRootCategory().getNov();
+//		}else if(currMonth==Month.DECEMBER) {
+//			value = this.getRootCategory().getDec();
+//		}
+//		return value;
+//	}
 	
 	// this function is reposnible for updating all items inside table when newly instance of the app is made 
 	public void setUpTable() {

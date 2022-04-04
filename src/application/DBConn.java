@@ -70,6 +70,44 @@ public class DBConn {
 			}
 		}
 		
+		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
+		public static ArrayList<RecentTransaction> FetchRecents() throws SQLException {
+			System.out.println("Fetching Recent Transactions from database...");
+			ArrayList<RecentTransaction> recents = new ArrayList<RecentTransaction>() ;
+			Statement st = DBConn.getConn().createStatement(); // Allows us to specify a command to the database in a string with SQL language, then execute it.
+			// Select the Transactions table in its entirety and put the results in ResultSet res.
+			// Using the .executeQuery("SQL commands...") on our Statement st, we send an SQL command or "query" to the database.
+			ResultSet res = st.executeQuery("SELECT * FROM TRANSACTIONS ORDER BY TransID DESC");
+			
+			int count = 1;
+			
+			while (res.next() && count <= 10) { // Loop through all of the rows in the ResultSet taken from the table... (1 row = 1 transaction)
+				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
+				
+				String title = res.getString("Name"); 
+				Double price = res.getDouble("Transval");
+				String strPrice = String.valueOf(price); 
+				Date sqldate = res.getDate("Date"); // sql.Date data type which is used by the database.
+				LocalDate date = sqldate.toLocalDate(); // LocalDate which is used in our application.
+				String category = res.getString("Category");
+				String transType = res.getString("TransactionType");
+				
+				if (transType.equals("EXPENSE")) {
+					recents.add(new RecentTransaction(title, category, TransactionType.EXPENSE, strPrice, date));
+				}
+				
+				else if (transType.equals("INCOME")) {
+					recents.add(new RecentTransaction(title, category, TransactionType.INCOME, strPrice, date));
+				}
+			
+				count += 1;
+				// System.out.println("Recent Trans: " + title + " found.");
+			}
+			return recents;
+		}
+		
+		
+		
 		// Fetches the Budget that was set for the month passed in.
 		// Used in setting the Budget text field in initialization of the Home Page in the HomeController.
 		public static Double FetchBudget(Month month, HomeController hc) {
@@ -94,10 +132,12 @@ public class DBConn {
 			
 			if (budgetFound = true) {
 				hc.setMonthlyBudget(budget);
+				//hc.setLeftToSpend();
 				return budget;
 			}
 			else { 
 				hc.setMonthlyBudget(0.0);
+				//hc.setLeftToSpend();
 				return 0.0;
 			}
 		}

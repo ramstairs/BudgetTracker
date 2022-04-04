@@ -1,6 +1,8 @@
 package application;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -29,16 +31,6 @@ public class IncomeController implements View, Initializable{
 	private TreeItem<Category> root = new TreeItem<Category>(rootCategory);
 	
 	private Model model;
-	
-	private Boolean fetched = false;
-	
-	public Boolean isFetched() {
-		return this.fetched;
-	}
-	
-	public void setFetched() {
-		this.fetched = true;
-	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -147,55 +139,54 @@ public class IncomeController implements View, Initializable{
 		setUpTable();
 	}
 	
+	// Adds a Transaction to the IncomeController.
 	public void addTransaction(String category, String subcategory, Transaction newTransaction) {
 
 		String catagory = category;
 		String subCategory = subcategory;
-
-		//		Transaction newTransaction = new Transaction(title, Double.parseDouble(price), date, typeTransaction);
 		
-		//If the category already exists
+		//If the category already exists,
 		if(this.model.categoryExist(catagory)) {
 			
 			// check if the subCategory exists:
 			if(this.model.subCategoriesExist(catagory, subCategory)) {
-				// Add the transaction to the subCategory
+				// Add the transaction to the subCategory.
 				this.model.addTransaction(catagory, subCategory, newTransaction);
 			}
-			//If the option doesnt exist
+			//If the option does not exist,
 			else {
-				//Get the Category
+				//Get the Category.
 				Category c = this.model.getCategoryWithName(catagory);
-				//Create new option
+				//Create new option.
 				Category newSubCategory = new Category(subCategory,false, c);
-				// Add the Child(newSubCategory) to the Parent(newCategory)
+				// Add the Child(newSubCategory) to the Parent(newCategory).
 				c.addToChildren(newSubCategory);
-				// Add the transaction to the option
+				// Add the transaction to the option.
 				newSubCategory.addTransaction(newTransaction);
-				// Add the subCategory to the list of subCategories of that category	
+				// Add the subCategory to the list of subCategories of that category.
 				this.model.addSubCategory(catagory, newSubCategory);
 				
-				//Tree view
-				//Get the Category
+				//Tree view,
+				//Get the Category,
 				TreeItem<Category> categoryTreeItem = this.getCategoryFromTree(c);
 				this.addSubCategoryToTree(categoryTreeItem, newSubCategory);
 			}
 		}
-		//If the category does not exist
+		//If the category does not exist,
 		else {
-			//Create a new Category
+			//Create a new Category.
 			Category newCategory = new Category(catagory,true, rootCategory);
-			// Add the Child(newCategory) to the Parent(rootCategory) - this is for the GUI TreeView
+			// Add the Child(newCategory) to the Parent(rootCategory) - this is for the GUI TreeView.
 			rootCategory.addToChildren(newCategory);
 			//Create a new Option
 			Category newSubCategory = new Category(subCategory,false, newCategory);
-			// Add the Child(newOption) to the Parent(newCategory)
+			// Add the Child(newOption) to the Parent(newCategory).
 			newCategory.addToChildren(newSubCategory);
 			// Add the transaction to the subCategory
 			newSubCategory.addTransaction(newTransaction);
-			// Add the category to the list of catagories
+			// Add the category to the list of categories.
 			this.model.addCategory(newCategory);
-			// Add a an empty array list of newSubCategory to the newCategory
+			// Add a an empty array list of newSubCategory to the newCategory.
 			this.model.addSubCategory(catagory, new ArrayList<Category>(), newSubCategory);
 			
 			//Tree View
@@ -255,7 +246,40 @@ public class IncomeController implements View, Initializable{
 		categoryTreeItem.getChildren().add(subCategory);
 	}
 	
-	// this function is reposnible for updating all items inside table when newly instance of the app is made 
+	// Returns the total value of a month's income.
+	public Double monthlyIncome(int m) { 
+		Month currMonth = LocalDate.now().getMonth();
+		Double value = 0.0;
+		
+		if(currMonth==Month.JANUARY) {
+			value = this.getRootCategory().getJan();
+		}else if(currMonth==Month.FEBRUARY) {
+			value = this.getRootCategory().getFeb();
+		}else if(currMonth==Month.MARCH) {
+			value = this.getRootCategory().getMar();
+		}else if(currMonth==Month.APRIL) {
+			value = this.getRootCategory().getApr();
+		}else if(currMonth==Month.MAY) {
+			value = this.getRootCategory().getMay();
+		}else if(currMonth==Month.JUNE) {
+			value = this.getRootCategory().getJun();
+		}else if(currMonth==Month.JULY) {
+			value = this.getRootCategory().getJul();
+		}else if(currMonth==Month.AUGUST) {
+			value = this.getRootCategory().getAug();
+		}else if(currMonth==Month.SEPTEMBER) {
+			value = this.getRootCategory().getSep();
+		}else if(currMonth==Month.OCTOBER) {
+			value = this.getRootCategory().getOct();
+		}else if(currMonth==Month.NOVEMBER) {
+			value = this.getRootCategory().getNov();
+		}else if(currMonth==Month.DECEMBER) {
+			value = this.getRootCategory().getDec();
+		}
+		return value;
+	}
+	
+	// this function is responsible for updating all items inside table when newly instance of the app is made 
 	public void setUpTable() {
 		if(this.model != null) {
 			//Get the children of the root
