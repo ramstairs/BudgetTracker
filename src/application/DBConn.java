@@ -71,7 +71,6 @@ public class DBConn {
 		
 		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
 		public static ArrayList<RecentTransaction> FetchRecents() throws SQLException {
-			System.out.println("Fetching Recent Transactions from database...");
 			ArrayList<RecentTransaction> recents = new ArrayList<RecentTransaction>() ;
 			Statement st = DBConn.getConn().createStatement(); // Allows us to specify a command to the database in a string with SQL language, then execute it.
 			// Select the Transactions table in its entirety and put the results in ResultSet res.
@@ -100,7 +99,6 @@ public class DBConn {
 				}
 			
 				count += 1;
-				// System.out.println("Recent Trans: " + title + " found.");
 			}
 			return recents;
 		}
