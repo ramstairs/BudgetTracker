@@ -141,27 +141,26 @@ public class HomeController implements View, Initializable{
 		if(fieldsValid()) {
 			
 			// Add the new valid Transaction to the Transactions table of the database.
-			Transaction trans = new Transaction(title, Double.valueOf(price), date, typeTransaction);
+			Transaction trans = new Transaction(title, (int) Math.round(Double.valueOf(price)), date, typeTransaction);
 			try {
 				DBConn.AddTransToDB(trans, category, subCategory);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			Transaction newTransaction = new Transaction(title, Double.parseDouble(price), date, typeTransaction);
+	
 			//Adding it to the list of Transactions
-			this.transactionsController.addTransaction(category, subCategory, newTransaction);
+			this.transactionsController.addTransaction(category, subCategory, trans);
 			
 			updateRecentTrans(); // Set the recent transactions to the updated 10 newest.
 			
 			//Adding the Transaction to Income Sheet:
 			if(typeTransaction == TransactionType.INCOME) {
-				incomeController.addTransaction(category, subCategory, newTransaction);
+				incomeController.addTransaction(category, subCategory, trans);
 				//recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.INCOME, price, date));//Adding to the recent transactions menu
 			}//Adding the Transaction to Expense Sheet:
 			else if (typeTransaction == TransactionType.EXPENSE) {
-				expenseController.addTransaction(category, subCategory, newTransaction);
+				expenseController.addTransaction(category, subCategory, trans);
 				//recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.EXPENSE , price, date));//Adding to the recent transactions menu
 			}
 

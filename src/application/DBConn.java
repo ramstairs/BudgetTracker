@@ -48,8 +48,7 @@ public class DBConn {
 				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
 				
 				String title = res.getString("Name"); 
-				Double price = res.getDouble("Transval");
-				String strPrice = String.valueOf(price); 
+				int price = (int) Math.round(res.getDouble("Transval"));
 				Date sqldate = res.getDate("Date"); // sql.Date data type which is used by the database.
 				LocalDate date = sqldate.toLocalDate(); // LocalDate which is used in our application.
 				String category = res.getString("Category");
@@ -85,7 +84,7 @@ public class DBConn {
 				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
 				
 				String title = res.getString("Name"); 
-				Double price = res.getDouble("Transval");
+				int price = (int) Math.round(res.getDouble("Transval"));
 				String strPrice = String.valueOf(price); 
 				Date sqldate = res.getDate("Date"); // sql.Date data type which is used by the database.
 				LocalDate date = sqldate.toLocalDate(); // LocalDate which is used in our application.

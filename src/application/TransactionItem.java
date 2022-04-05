@@ -34,8 +34,7 @@ public class TransactionItem extends AnchorPane{
 		this.category = category;
 		this.subCategory = subcategory;
 		this.d = newTransaction.getDate();
-		this.amm = Double.toString( newTransaction.getValue() );
-		
+		this.amm = Integer.toString(((int) Math.round(newTransaction.getValue()))); 
 		this.transCntrl = transCntrl;
 		
 		//Making the Transaction Item as a component

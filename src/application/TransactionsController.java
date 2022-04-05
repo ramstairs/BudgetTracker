@@ -43,7 +43,7 @@ public class TransactionsController implements View, Initializable{
 	
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        //Creating a search behaviour for the search field
+        //Creating a search behavior for the search field
         //newValue is the what we are looking for
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {            
             if ( newValue != "" && newValue != null) {
@@ -52,7 +52,7 @@ public class TransactionsController implements View, Initializable{
                 // loop through the transactions and see if they exist
                 for (TransactionItem tr : TransactionItemList) {
                     if(newValue.equals(tr.getTransaction().getName()) || newValue.equals(Double.toString(tr.getTransaction().getValue())) || newValue.equals(tr.category) || newValue.equals(tr.subCategory)) {
-                        // if the name of thetransaction, category,subcategory, or ammount, or date is found then add it
+                        // if the name of the transaction, category,subcategory, or amount, or date is found then add it
                         wantedTransactions.add(tr);
                     }
                 }
