@@ -12,6 +12,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -87,10 +88,12 @@
             </VBox>
             <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <Pane style="-fx-background-color: FFFFFF;" styleClass="container">
+                  <Pane prefHeight="170.0" prefWidth="270.0" style="-fx-background-color: FFFFFF;" styleClass="container">
                      <children>
-                        <PieChart layoutX="11.0" layoutY="19.0" maxHeight="91.0" prefHeight="90.0" prefWidth="240.0" />
-                        <Label contentDisplay="CENTER" layoutX="46.0" layoutY="6.0" text="Categories (last 30 days)" textAlignment="CENTER" />
+                        <PieChart fx:id="categoryPie" labelLineLength="10.0" legendSide="LEFT" prefHeight="170.0" prefWidth="270.0">
+                           <effect>
+                              <Glow />
+                           </effect></PieChart>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: FFFFFF;" styleClass="container">

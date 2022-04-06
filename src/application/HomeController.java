@@ -9,8 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -44,6 +47,8 @@ public class HomeController implements View, Initializable{
 	private ProgressBar budgetMeter;
 	@FXML
 	private VBox recentTransactionsList;
+	@FXML
+	private PieChart categoryPie;
 	
 	private ExpenseController expenseController;
 	private IncomeController incomeController;
@@ -101,32 +106,48 @@ public class HomeController implements View, Initializable{
 		}
 	}
 	
-	// Sets the private field recentCategories, the list of the most recent categories spent in.
-	private void setRecentCats() {
+	public void loadData() {
 		
-		for (RecentTransaction i : recentList)
+		// Sets the private field recentCategories, the list of the most recent categories spent in.
+		for (int i = 0; i < recentList.size(); i++) // For all recent transactions...
 		{
-			Category newCat = model.getCategoryWithName(i.getCategoryName());
+			Category newCat = model.getCategoryWithName(recentList.get(i).getCategoryName()); // Get category of RecentTransaction...
 			
-			for (Category j : recentCategories)
-			{
-				if (j.getName() != newCat.getName())
-					recentCategories.add(newCat);
+			if (recentCategories.size() == 0) // If recent categories list is empty, add it.
+				recentCategories.add(newCat);
+			
+			Boolean addToRecentCats = true;
+			
+			for (int j = 0; j < recentCategories.size(); j++) { // If the category of RecentTransaction at recentList.get(i) is nowhere in recentCategories, add it.
+				if (recentCategories.get(j).getName().equals(recentList.get(i).getCategoryName()))
+				{
+					addToRecentCats = false;
+				}
 			}
+				
+			if (addToRecentCats) {
+				recentCategories.add(newCat);
+			}	
 		}
-	}
-	
-	private void loadData() {
+		
+		// Now gather the data to put in the PieChart.
 		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
 		
-		for (Category i : recentCategories)
-			list.add(new PieChart.Data(i.getName(), i.getTotal()));
+		for (Category c : recentCategories) {
+			list.add(new PieChart.Data(c.getName(), c.getCurrMonth()));
+		}
 		
-		PieChart catChart = new PieChart(list);
+		String thisMonth = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
 		
-		catChart.setTitle("Recent Categorical Spending");
+		categoryPie.setData(list);
+		categoryPie.setTitle(thisMonth + " Categorical Spending");
+		categoryPie.setClockwise(true);
+		categoryPie.setLabelLineLength(10);
+		categoryPie.setLabelsVisible(true);
+		categoryPie.setLegendVisible(true);
+		categoryPie.setLegendSide(Side.LEFT);
 	}
-	
+		
 	@FXML
 	private void addTransaction() throws SQLException {
 		//Get the data
@@ -153,6 +174,7 @@ public class HomeController implements View, Initializable{
 			this.transactionsController.addTransaction(category, subCategory, trans);
 			
 			updateRecentTrans(); // Set the recent transactions to the updated 10 newest.
+			//loadData();
 			
 			//Adding the Transaction to Income Sheet:
 			if(typeTransaction == TransactionType.INCOME) {
@@ -171,6 +193,8 @@ public class HomeController implements View, Initializable{
 			//Update the left to spend field 
 			setLeftToSpendField();
 			model.notifyObservers();
+			
+			loadData();
 		}
 
 	}

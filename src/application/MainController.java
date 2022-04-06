@@ -120,6 +120,7 @@ public class MainController implements Initializable{
 		}
 		DBConn.FetchTransactions(expenseController, incomeController, transactionController);
 		homeController.updateRecentTrans();
+		homeController.loadData();
 	}
 	
 	public Model getModel() {
