@@ -47,12 +47,18 @@ public class MainController implements Initializable{
 	private TransactionsController transactionController;
 //	private SummaryController summaryController;
 	
-	public void btnHome(ActionEvent e) throws IOException{
-		if ( currPage != Page.HOME) {
-			contentArea.getChildren().removeAll();
-			contentArea.getChildren().setAll(this.homeRoot);
-			currPage = Page.HOME;
-			setButton(btnHome);
+	public void btnHome(ActionEvent e) throws IOException, SQLException{
+		try {
+			if ( currPage != Page.HOME) {
+				homeController.loadCategoryPie();
+				contentArea.getChildren().removeAll();
+				contentArea.getChildren().setAll(this.homeRoot);
+				currPage = Page.HOME;
+				setButton(btnHome);
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 	
@@ -120,7 +126,7 @@ public class MainController implements Initializable{
 		}
 		DBConn.FetchTransactions(expenseController, incomeController, transactionController);
 		homeController.updateRecentTrans();
-		homeController.loadData();
+		homeController.loadCategoryPie();
 	}
 	
 	public Model getModel() {

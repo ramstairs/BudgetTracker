@@ -70,7 +70,7 @@ public class DBConn {
 		}
 		
 		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
-		public static ArrayList<RecentTransaction> FetchRecents() throws SQLException {
+		public static ArrayList<RecentTransaction> FetchRecents(Boolean expensesOnly) throws SQLException {
 			ArrayList<RecentTransaction> recents = new ArrayList<RecentTransaction>() ;
 			Statement st = DBConn.getConn().createStatement(); // Allows us to specify a command to the database in a string with SQL language, then execute it.
 			// Select the Transactions table in its entirety and put the results in ResultSet res.
@@ -78,6 +78,7 @@ public class DBConn {
 			ResultSet res = st.executeQuery("SELECT * FROM TRANSACTIONS ORDER BY TransID DESC");
 			
 			int count = 1;
+				
 			
 			while (res.next() && count <= 10) { // Loop through all of the rows in the ResultSet taken from the table... (1 row = 1 transaction)
 				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
@@ -92,14 +93,17 @@ public class DBConn {
 				
 				if (transType.equals("EXPENSE")) {
 					recents.add(new RecentTransaction(title, category, TransactionType.EXPENSE, strPrice, date));
+					
+					if (expensesOnly)
+						count += 1;
 				}
 				
-				else if (transType.equals("INCOME")) {
+				else if (transType.equals("INCOME") && (!expensesOnly)) {
 					recents.add(new RecentTransaction(title, category, TransactionType.INCOME, strPrice, date));
-				}
-			
-				count += 1;
+					count += 1;
+				}		
 			}
+			
 			return recents;
 		}
 		

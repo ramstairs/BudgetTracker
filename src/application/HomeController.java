@@ -84,6 +84,7 @@ public class HomeController implements View, Initializable{
 	//The list set for the recent transactions
 	private ArrayList<RecentTransaction> recentList = new ArrayList<RecentTransaction>();
 	private ArrayList<Category> recentCategories = new ArrayList<Category>();
+	private ArrayList<RecentTransaction> recentExpenses = new ArrayList<RecentTransaction>();
 
 	//Model object
 	private Model model;
@@ -98,7 +99,7 @@ public class HomeController implements View, Initializable{
 	// Called in AddTransaction() after the transaction is added to the DB.
 	public void updateRecentTrans() throws SQLException {
 		
-		recentList = DBConn.FetchRecents(); // Grabs 10 most recent transactions from Transactions table.
+		recentList = DBConn.FetchRecents(false); // Grabs 10 most recent transactions from Transactions table.
 		recentTransactionsList.getChildren().clear(); // Clear previous list of most recent transactions.
 		
 		for (RecentTransaction r : recentList) { // Set the children of the recentTransactionsList to the new list.
@@ -106,12 +107,14 @@ public class HomeController implements View, Initializable{
 		}
 	}
 	
-	public void loadData() {
+	public void loadCategoryPie() throws SQLException {
+		
+		recentExpenses = DBConn.FetchRecents(true); // Get the 10 most recent EXPENSE transactions.
 		
 		// Sets the private field recentCategories, the list of the most recent categories spent in.
-		for (int i = 0; i < recentList.size(); i++) // For all recent transactions...
+		for (int i = 0; i < recentExpenses.size(); i++) // For all recent transactions...
 		{
-			Category newCat = model.getCategoryWithName(recentList.get(i).getCategoryName()); // Get category of RecentTransaction...
+			Category newCat = model.getCategoryWithName(recentExpenses.get(i).getCategoryName()); // Get category of RecentTransaction...
 			
 			if (recentCategories.size() == 0) // If recent categories list is empty, add it.
 				recentCategories.add(newCat);
@@ -119,33 +122,35 @@ public class HomeController implements View, Initializable{
 			Boolean addToRecentCats = true;
 			
 			for (int j = 0; j < recentCategories.size(); j++) { // If the category of RecentTransaction at recentList.get(i) is nowhere in recentCategories, add it.
-				if (recentCategories.get(j).getName().equals(recentList.get(i).getCategoryName()))
+				if (recentCategories.get(j).getName().equals(recentExpenses.get(i).getCategoryName()))
 				{
-					addToRecentCats = false;
+					addToRecentCats = false; // Category was already in the recent list, discard it.
 				}
 			}
 				
 			if (addToRecentCats) {
-				recentCategories.add(newCat);
+				recentCategories.add(newCat); // Category was not already in the recent list, add it.
 			}	
 		}
 		
 		// Now gather the data to put in the PieChart.
-		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+		ObservableList<PieChart.Data> list = FXCollections.observableArrayList(); // List of pie slices.
 		
 		for (Category c : recentCategories) {
-			list.add(new PieChart.Data(c.getName(), c.getCurrMonth()));
+			list.add(new PieChart.Data(c.getName(), c.getCurrMonth())); // Create a pie slices for every recent expense category.
 		}
 		
 		String thisMonth = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
 		
+		
+		// Set the pie chart's properties.
 		categoryPie.setData(list);
 		categoryPie.setTitle(thisMonth + " Categorical Spending");
 		categoryPie.setClockwise(true);
 		categoryPie.setLabelLineLength(10);
 		categoryPie.setLabelsVisible(true);
-		categoryPie.setLegendVisible(true);
-		categoryPie.setLegendSide(Side.LEFT);
+//		categoryPie.setLegendVisible(true);
+//		categoryPie.setLegendSide(Side.LEFT);
 	}
 		
 	@FXML
@@ -194,7 +199,7 @@ public class HomeController implements View, Initializable{
 			setLeftToSpendField();
 			model.notifyObservers();
 			
-			loadData();
+			loadCategoryPie();
 		}
 
 	}

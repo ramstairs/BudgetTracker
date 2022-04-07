@@ -12,7 +12,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -88,15 +88,15 @@
             </VBox>
             <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <Pane prefHeight="170.0" prefWidth="270.0" style="-fx-background-color: FFFFFF;" styleClass="container">
+                  <Pane prefHeight="166.0" prefWidth="270.0" style="-fx-background-color: FFFFFF;" styleClass="container">
                      <children>
-                        <PieChart fx:id="categoryPie" labelLineLength="10.0" legendSide="LEFT" prefHeight="170.0" prefWidth="270.0">
+                        <PieChart fx:id="categoryPie" labelLineLength="10.0" legendSide="LEFT" prefHeight="159.0" prefWidth="270.0">
                            <effect>
-                              <Glow />
+                              <Blend />
                            </effect></PieChart>
                      </children>
                   </Pane>
-                  <Pane style="-fx-background-color: FFFFFF;" styleClass="container">
+                  <Pane prefWidth="270.0" style="-fx-background-color: FFFFFF;" styleClass="container">
                      <children>
                         <VBox alignment="CENTER" layoutX="26.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="6.0">
                            <children>
