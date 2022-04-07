@@ -175,19 +175,19 @@ public class HomeController implements View, Initializable{
 			}
 	
 			//Adding it to the list of Transactions
-			this.transactionsController.addTransaction(category, subCategory, trans);
+			this.transactionsController.addToTransactionList(category, subCategory, trans);
 			
-			updateRecentTrans(); // Set the recent transactions to the updated 10 newest.
-			//loadData();
+			updateRecentTrans(); // Set the recent transactions to the updated 10 newest in the SQL database.
 			
 			//Adding the Transaction to Income Sheet:
 			if(typeTransaction == TransactionType.INCOME) {
 				incomeController.addTransaction(category, subCategory, trans);
-				//recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.INCOME, price, date));//Adding to the recent transactions menu
-			}//Adding the Transaction to Expense Sheet:
+				
+			}
+			//Adding the Transaction to Expense Sheet:
 			else if (typeTransaction == TransactionType.EXPENSE) {
 				expenseController.addTransaction(category, subCategory, trans);
-				//recentTransactionsList.getChildren().add( new RecentTransaction(title, category, TransactionType.EXPENSE , price, date));//Adding to the recent transactions menu
+				
 			}
 
 			//Clear the fields while keeping the date and the category
@@ -489,7 +489,15 @@ public class HomeController implements View, Initializable{
 	}
 
 	@Override
-	public void update() {
+	public void update()  { // Reload the recent transactions list and the categorical pie chart as the model's data changed.
+//		try {
+//			DBConn.FetchTransactions(expenseController, incomeController, transactionsController);
+//			updateRecentTrans();
+//			loadCategoryPie();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -14,7 +15,7 @@
             <Insets left="10.0" right="10.0" />
          </padding>
          <children>
-            <LineChart prefHeight="50.0" prefWidth="500.0">
+            <LineChart fx:id="transactionLineChart" prefHeight="400.0" prefWidth="550.0">
               <xAxis>
                 <CategoryAxis fx:id="monthName" side="BOTTOM" />
               </xAxis>
@@ -22,6 +23,14 @@
                 <NumberAxis fx:id="monthlyTotal" side="LEFT" />
               </yAxis>
             </LineChart>
+            <BarChart fx:id="categoryBarChart" prefHeight="400.0" prefWidth="550.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
       </HBox>
    </children>

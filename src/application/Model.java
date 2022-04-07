@@ -58,6 +58,8 @@ public class Model {
 		}
 		return null;
 	}
+	
+	
 
 	public void addCategory(Category category) {
 		this.categories.add(category);
@@ -75,24 +77,25 @@ public class Model {
 		this.notifyObservers();
 	}
 	
-	public void addTransaction(String c, String sc, Transaction newTransaction) {// This is added 
+	public void addTransaction(String c, String sc, Transaction newTransaction) throws SQLException { // Add a transaction of an existing category to the Model.
 		ArrayList<Category> scList = this.subCategory.get(c);
 		for(Category el: scList) {
 			if(el.getName() == sc) {
 				el.addTransaction(newTransaction);
 			}
 		}
+		// DBConn.AddTransToDB(newTransaction, c, sc); // Add the transaction to the SQL database for long-term storage.
 		this.notifyObservers();
 	}
 	
-	public void removeTransaction(String c, String sc, Transaction transaction) throws SQLException {// This is added 
+	public void removeTransaction(String c, String sc, Transaction transaction) throws SQLException { // Remove an existing transaction from the Model & DB.
 		ArrayList<Category> scList = this.subCategory.get(c);
 		for(Category el: scList) {
 			if(el.getName() == sc) {
 				el.removeTransaction(transaction);
 			}
 		}
-		DBConn.RemoveTransFromDB(transaction, c, sc);
+		DBConn.RemoveTransFromDB(transaction, c, sc); // Remove the transaction from the SQL database.
 		this.notifyObservers();
 	}
 

@@ -31,16 +31,6 @@ public class TransactionsController implements View, Initializable{
 	
 	private Model model;
 	
-	private Boolean fetched;
-	
-	public Boolean isFetched() {
-		return this.fetched;
-	}
-	
-	public void setFetched() {
-		this.fetched = true;
-	}
-	
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         //Creating a search behavior for the search field
@@ -73,12 +63,12 @@ public class TransactionsController implements View, Initializable{
 		return this.model;
 	}
 	
-	public void addTransaction(String category, String subcategory, Transaction newTransaction) {
+	public void addToTransactionList(String category, String subcategory, Transaction newTransaction) {
 		TransactionItem newTransactionItem = new TransactionItem(category, subcategory, newTransaction, this);
 		TransactionItemList.add(newTransactionItem);
 	}
 
-	public void deleteTransaction(TransactionItem transactionItem) throws SQLException {
+	public void deleteTransaction(TransactionItem transactionItem) throws SQLException{
 		//Called only from transactionItem class (controller)
 		TransactionItemList.remove(transactionItem);
 		this.model.removeTransaction(transactionItem.category, transactionItem.subCategory, transactionItem.getTransaction());

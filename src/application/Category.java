@@ -79,7 +79,7 @@ public class Category {
 	}
 	
 	
-	public ArrayList<Transaction> getTransactoins(){
+	public ArrayList<Transaction> getTransactions(){
 		return transactions;
 	}
 	public void printTransactions(){

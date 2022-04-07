@@ -51,6 +51,7 @@ public class MainController implements Initializable{
 		try {
 			if ( currPage != Page.HOME) {
 				homeController.loadCategoryPie();
+				homeController.updateRecentTrans();
 				contentArea.getChildren().removeAll();
 				contentArea.getChildren().setAll(this.homeRoot);
 				currPage = Page.HOME;
@@ -122,6 +123,7 @@ public class MainController implements Initializable{
 			this.transactionController.setModel(m);
 			this.model.attachObserver(transactionController);
 		}if (this.summaryController != null) { // Set the Summary Controller's Database model
+			this.summaryController.setModel(m);
 			this.model.attachObserver(summaryController);
 		}
 		DBConn.FetchTransactions(expenseController, incomeController, transactionController);

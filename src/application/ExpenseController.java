@@ -3,6 +3,7 @@ package application;
 
 import java.util.ArrayList;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ResourceBundle;
@@ -143,23 +144,23 @@ public class ExpenseController implements View, Initializable{
 	}
 
 	
-	public void addTransaction(String category, String subcategory, Transaction newTransaction) {
+	public void addTransaction(String cat, String subcat, Transaction newTransaction) throws SQLException {
 
-		String catagory = category;
-		String subCategory = subcategory;
+		String category = cat;
+		String subCategory = subcat;
 		
 		//If the category already exists
-		if(this.model.categoryExist(catagory)) {
+		if(this.model.categoryExist(category)) {
 			
 			// check if the subCategory exists:
-			if(this.model.subCategoriesExist(catagory, subCategory)) {
+			if(this.model.subCategoriesExist(category, subCategory)) {
 				// Add the transaction to the subCategory
-				this.model.addTransaction(catagory, subCategory, newTransaction);
+				this.model.addTransaction(cat, subcat, newTransaction);
 			}
 			//If the option doesnt exist
 			else {
 				//Get the Category
-				Category c = this.model.getCategoryWithName(catagory);
+				Category c = this.model.getCategoryWithName(category);
 				//Create new option
 				Category newSubCategory = new Category(subCategory,false, c);
 				// Add the Child(newSubCategory) to the Parent(newCategory)
@@ -167,7 +168,7 @@ public class ExpenseController implements View, Initializable{
 				// Add the transaction to the option
 				newSubCategory.addTransaction(newTransaction);
 				// Add the subCategory to the list of subCategories of that category	
-				this.model.addSubCategory(catagory, newSubCategory);
+				this.model.addSubCategory(category, newSubCategory);
 				
 				//Tree view
 				//Get the Category
@@ -178,7 +179,7 @@ public class ExpenseController implements View, Initializable{
 		//If the category does not exist
 		else {
 			//Create a new Category
-			Category newCategory = new Category(catagory,true, rootCategory);
+			Category newCategory = new Category(category,true, rootCategory);
 			// Add the Child(newCategory) to the Parent(rootCategory) - this is for the GUI TreeView
 			rootCategory.addToChildren(newCategory);
 			//Create a new Option
@@ -187,10 +188,10 @@ public class ExpenseController implements View, Initializable{
 			newCategory.addToChildren(newSubCategory);
 			// Add the transaction to the subCategory
 			newSubCategory.addTransaction(newTransaction);
-			// Add the category to the list of catagories
+			// Add the category to the list of categories
 			this.model.addCategory(newCategory);
 			// Add a an empty array list of newSubCategory to the newCategory
-			this.model.addSubCategory(catagory, new ArrayList<Category>(), newSubCategory);
+			this.model.addSubCategory(category, new ArrayList<Category>(), newSubCategory);
 			
 			//Tree View
 			TreeItem<Category> categoryTreeItem = this.addCategoryToTree(newCategory);

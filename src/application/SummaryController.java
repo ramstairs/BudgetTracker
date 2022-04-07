@@ -5,16 +5,24 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 
 public class SummaryController implements View, Initializable {
 
 	@FXML
-	private NumberAxis monthlyTotal;
+	private NumberAxis monthlyTotal; // Line Chart Y-Axis 
 	
 	@FXML
-	private CategoryAxis monthName;
+	private CategoryAxis monthName; // Line Chart X-Axis
+	
+	@FXML
+	private LineChart<String, Number> transactionLineChart;
+	
+	@FXML
+	private BarChart<String, Number> categoryBarChart;
 	
 	private TransactionsController transCont;
 	
@@ -22,6 +30,14 @@ public class SummaryController implements View, Initializable {
 	
 	public void setModel(Model m) {
 		this.model = m;
+	}
+	
+	public Model getModel() {
+		return this.model;
+	}
+	
+	public void populateLineChart() {
+		
 	}
 	
 	@Override
@@ -35,5 +51,4 @@ public class SummaryController implements View, Initializable {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
