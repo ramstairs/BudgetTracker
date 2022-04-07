@@ -96,7 +96,7 @@ public class Model {
 		this.notifyObservers();
 	}
 
-	public void attachOberver(View o) {
+	public void attachObserver(View o) {
 		Observers.add(o);
 	}
 

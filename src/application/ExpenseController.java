@@ -208,11 +208,6 @@ public class ExpenseController implements View, Initializable{
 		setUpTable();
 	}
 	
-	public Model getModel() {
-		return this.model;
-	}
-	
-	
 	public TreeItem<Category> addCategoryToTree(Category c) {
 		//Get the children of the root
 		ObservableList<TreeItem<Category>> rootChildren = root.getChildren();

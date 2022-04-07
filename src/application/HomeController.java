@@ -31,8 +31,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-
-
 public class HomeController implements View, Initializable{
 	
 	@FXML
@@ -53,6 +51,7 @@ public class HomeController implements View, Initializable{
 	private ExpenseController expenseController;
 	private IncomeController incomeController;
 	private TransactionsController transactionsController;
+	private SummaryController summaryController;
 	
 	private HashMap<String, String[]> options = new HashMap<String, String[]>();
 	
@@ -277,6 +276,10 @@ public class HomeController implements View, Initializable{
 	
 	public void setTransactionController(TransactionsController c) {
 		this.transactionsController = c;
+	}
+	
+	public void setSummaryController(SummaryController c) {
+		this.summaryController = c;
 	}
 	
 	@Override
