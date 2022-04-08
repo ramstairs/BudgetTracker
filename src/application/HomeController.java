@@ -76,7 +76,6 @@ public class HomeController implements View, Initializable{
 
 	//Income Options:
 	private String[] incomeCategoryList = {"Wages","Other Income"};
-	
 	private String[] Wages = {"Paycheck","Bonus", "Others"};
 	private String[] incomeOther = {"Transfer from savings","Interest Income", "Dividends", "Gifts", "Refunds", "Investments"};
 	

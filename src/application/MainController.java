@@ -33,13 +33,13 @@ public class MainController implements Initializable{
 	private Parent incomeRoot;
 	private Parent expenseRoot;
 	private Parent transactionRoot;
-//	private Parent summaryRoot;
+	private Parent summaryRoot;
 	
 	private FXMLLoader homeFXML;
 	private FXMLLoader incomeFXML;
 	private FXMLLoader expenseFXML;
 	private FXMLLoader transactionFXML;
-//	private FXMLLoader summaryFXML;
+	private FXMLLoader summaryFXML;
 	
 	private HomeController homeController;
 	private ExpenseController expenseController;
@@ -92,9 +92,8 @@ public class MainController implements Initializable{
 
 	public void btnSummary(ActionEvent e) throws IOException{
 		if ( currPage != Page.SUMMARY) {
-			
 			contentArea.getChildren().removeAll();
-			contentArea.getChildren().setAll();
+			contentArea.getChildren().setAll(this.summaryRoot);
 			currPage = Page.SUMMARY;
 			setButton(btnSummary);
 		}
@@ -162,6 +161,12 @@ public class MainController implements Initializable{
 			this.transactionFXML = new FXMLLoader(getClass().getResource("/transactionsPage.fxml"));//Getting the FXML file
 			this.transactionRoot = this.transactionFXML.load();
 			this.transactionController = this.transactionFXML.getController();
+		} catch(Exception e) {System.out.println(e);}
+		try {
+			//Loading Transactions Page
+			this.summaryFXML = new FXMLLoader(getClass().getResource("/summaryPage.fxml")); 
+			this.summaryRoot = this.summaryFXML.load();
+			this.summaryController = this.summaryFXML.getController();
 		} catch(Exception e) {System.out.println(e);}
 	
 	}

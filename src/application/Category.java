@@ -298,5 +298,38 @@ public class Category {
 		
 		return spent;
 	}
+	
+	public Double getMonth(int m) {
+		Month month = Month.of(m);
+		Double spent = 0.0;
+		
+		if(month==Month.JANUARY) {
+			spent = this.getJan();
+		}else if(month==Month.FEBRUARY) {
+			spent = this.getFeb();
+		}else if(month==Month.MARCH) {
+			spent = this.getMar();
+		}else if(month==Month.APRIL) {
+			spent = this.getApr();
+		}else if(month==Month.MAY) {
+			spent = this.getMay();
+		}else if(month==Month.JUNE) {
+			spent = this.getJun();
+		}else if(month==Month.JULY) {
+			spent = this.getJul();
+		}else if(month==Month.AUGUST) {
+			spent = this.getAug();
+		}else if(month==Month.SEPTEMBER) {
+			spent = this.getSep();
+		}else if(month==Month.OCTOBER) {
+			spent = this.getOct();
+		}else if(month==Month.NOVEMBER) {
+			spent = this.getNov();
+		}else if(month==Month.DECEMBER) {
+			spent = this.getDec();
+		}
+		
+		return spent;
+	}
 
 }

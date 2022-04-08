@@ -280,6 +280,38 @@ public class IncomeController implements View, Initializable{
 		return value;
 	}
 	
+	// Returns the total value of a month's expenses.
+	public Double incomeOfMonth(int m) { 
+		Double value = 0.0;
+		
+		if(Month.of(m)==Month.JANUARY) {
+			value = this.getRootCategory().getJan();
+		}else if(Month.of(m)==Month.FEBRUARY) {
+			value = this.getRootCategory().getFeb();
+		}else if(Month.of(m)==Month.MARCH) {
+			value = this.getRootCategory().getMar();
+		}else if(Month.of(m)==Month.APRIL) {
+			value = this.getRootCategory().getApr();
+		}else if(Month.of(m)==Month.MAY) {
+			value = this.getRootCategory().getMay();
+		}else if(Month.of(m)==Month.JUNE) {
+			value = this.getRootCategory().getJun();
+		}else if(Month.of(m)==Month.JULY) {
+			value = this.getRootCategory().getJul();
+		}else if(Month.of(m)==Month.AUGUST) {
+			value = this.getRootCategory().getAug();
+		}else if(Month.of(m)==Month.SEPTEMBER) {
+			value = this.getRootCategory().getSep();
+		}else if(Month.of(m)==Month.OCTOBER) {
+			value = this.getRootCategory().getOct();
+		}else if(Month.of(m)==Month.NOVEMBER) {
+			value = this.getRootCategory().getNov();
+		}else if(Month.of(m)==Month.DECEMBER) {
+			value = this.getRootCategory().getDec();
+		}
+		return value;
+	}
+	
 	// this function is responsible for updating all items inside table when newly instance of the app is made 
 	public void setUpTable() {
 		if(this.model != null) {

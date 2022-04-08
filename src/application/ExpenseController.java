@@ -199,7 +199,6 @@ public class ExpenseController implements View, Initializable{
 		}
 	}
 	
-	
 	public Category getRootCategory() {
 		return this.rootCategory;
 	}
@@ -247,39 +246,71 @@ public class ExpenseController implements View, Initializable{
 	}
 	
 	// Returns the total value of a month's expenses.
-//	public Double monthlyExpenses(int m) { 
-//		Month currMonth = LocalDate.now().getMonth();
-//		Double value = 0.0;
-//		
-//		if(currMonth==Month.JANUARY) {
-//			value = this.getRootCategory().getJan();
-//		}else if(currMonth==Month.FEBRUARY) {
-//			value = this.getRootCategory().getFeb();
-//		}else if(currMonth==Month.MARCH) {
-//			value = this.getRootCategory().getMar();
-//		}else if(currMonth==Month.APRIL) {
-//			value = this.getRootCategory().getApr();
-//		}else if(currMonth==Month.MAY) {
-//			value = this.getRootCategory().getMay();
-//		}else if(currMonth==Month.JUNE) {
-//			value = this.getRootCategory().getJun();
-//		}else if(currMonth==Month.JULY) {
-//			value = this.getRootCategory().getJul();
-//		}else if(currMonth==Month.AUGUST) {
-//			value = this.getRootCategory().getAug();
-//		}else if(currMonth==Month.SEPTEMBER) {
-//			value = this.getRootCategory().getSep();
-//		}else if(currMonth==Month.OCTOBER) {
-//			value = this.getRootCategory().getOct();
-//		}else if(currMonth==Month.NOVEMBER) {
-//			value = this.getRootCategory().getNov();
-//		}else if(currMonth==Month.DECEMBER) {
-//			value = this.getRootCategory().getDec();
-//		}
-//		return value;
-//	}
+	public Double monthlyExpenses(int m) { 
+		Month currMonth = LocalDate.now().getMonth();
+		Double value = 0.0;
+		
+		if(Month.of(m)==Month.JANUARY) {
+			value = this.getRootCategory().getJan();
+		}else if(currMonth==Month.FEBRUARY) {
+			value = this.getRootCategory().getFeb();
+		}else if(currMonth==Month.MARCH) {
+			value = this.getRootCategory().getMar();
+		}else if(currMonth==Month.APRIL) {
+			value = this.getRootCategory().getApr();
+		}else if(currMonth==Month.MAY) {
+			value = this.getRootCategory().getMay();
+		}else if(currMonth==Month.JUNE) {
+			value = this.getRootCategory().getJun();
+		}else if(currMonth==Month.JULY) {
+			value = this.getRootCategory().getJul();
+		}else if(currMonth==Month.AUGUST) {
+			value = this.getRootCategory().getAug();
+		}else if(currMonth==Month.SEPTEMBER) {
+			value = this.getRootCategory().getSep();
+		}else if(currMonth==Month.OCTOBER) {
+			value = this.getRootCategory().getOct();
+		}else if(currMonth==Month.NOVEMBER) {
+			value = this.getRootCategory().getNov();
+		}else if(currMonth==Month.DECEMBER) {
+			value = this.getRootCategory().getDec();
+		}
+		return value;
+	}
 	
-	// this function is reposnible for updating all items inside table when newly instance of the app is made 
+	// Returns the total value of a month's expenses.
+	public Double expensesOfMonth(int m) { 
+		Double value = 0.0;
+		
+		if(Month.of(m)==Month.JANUARY) {
+			value = this.getRootCategory().getJan();
+		}else if(Month.of(m)==Month.FEBRUARY) {
+			value = this.getRootCategory().getFeb();
+		}else if(Month.of(m)==Month.MARCH) {
+			value = this.getRootCategory().getMar();
+		}else if(Month.of(m)==Month.APRIL) {
+			value = this.getRootCategory().getApr();
+		}else if(Month.of(m)==Month.MAY) {
+			value = this.getRootCategory().getMay();
+		}else if(Month.of(m)==Month.JUNE) {
+			value = this.getRootCategory().getJun();
+		}else if(Month.of(m)==Month.JULY) {
+			value = this.getRootCategory().getJul();
+		}else if(Month.of(m)==Month.AUGUST) {
+			value = this.getRootCategory().getAug();
+		}else if(Month.of(m)==Month.SEPTEMBER) {
+			value = this.getRootCategory().getSep();
+		}else if(Month.of(m)==Month.OCTOBER) {
+			value = this.getRootCategory().getOct();
+		}else if(Month.of(m)==Month.NOVEMBER) {
+			value = this.getRootCategory().getNov();
+		}else if(Month.of(m)==Month.DECEMBER) {
+			value = this.getRootCategory().getDec();
+		}
+		return value;
+	}
+	
+	// this function is responsible for updating all items inside table when newly instance of the app is made 
 	public void setUpTable() {
 		if(this.model != null) {
 			//Get the children of the root

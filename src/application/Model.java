@@ -98,7 +98,61 @@ public class Model {
 		DBConn.RemoveTransFromDB(transaction, c, sc); // Remove the transaction from the SQL database.
 		this.notifyObservers();
 	}
+	
+	// Returns the total expenditure in a category throughout all records (used for bar chart in Summary page).
+	public Double getTotalForCategory(Category cat) {
+		
+		Double catTotal = 0.0;
+		
+		for (Transaction t : cat.getTransactions()) {
+			if (t.getTransType().equals("EXPENSE"))
+				catTotal += t.getValue();
+		}
+		if (cat.isParent()) {
+			for (Category c : cat.getChildren()) {
+				catTotal += getTotalForCategory(c);
+			}
+		}
+		return catTotal; 
+	}
+		
+	
 
+	public Double getTotalForMonth(int month, Boolean expenses) { // Used in Summary page line chart.
+		
+		Double total = 0.0;
+		
+		String[] incomeCategoryList = {"Wages","Other Income"};
+		String[] expenseCategoryList = {"Children","Debt","Education","Entertainment","Everyday","Gifts","Health","Home","Insurance","Pets","Technology","Transportation","Travel","Utilities","Invests&eTransfer"};
+		
+			if (expenses) { // Populating the expenses portion of the line chart...
+				
+				for (Category cat : getCategories()) {// For all categories we have transactions in...
+					
+					for (String s : expenseCategoryList) {
+						
+						if (cat.getName().equals(s)) { // If the category is some Expense category...
+							total += cat.getMonth(month); // Get the expense category's expenditure for the passed in month, and all of its subcategories.
+						}
+					}
+				}
+			}
+			
+			else { // Populating the income portion of the line chart...
+				for (Category cat : getCategories()) { // For all categories we have transactions in...
+					
+					for (String s : incomeCategoryList) { 
+						
+						if (cat.getName().equals(s)) { // If the category is some Income category, add its monthly value to the total and all of its subcategories.
+							total += cat.getMonth(month);
+						}
+					}		
+				}
+			}
+		
+		return total;
+	}
+	
 	public void attachObserver(View o) {
 		Observers.add(o);
 	}
