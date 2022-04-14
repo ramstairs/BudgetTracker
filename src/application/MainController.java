@@ -47,19 +47,16 @@ public class MainController implements Initializable{
 	private TransactionsController transactionController;
 	private SummaryController summaryController;
 	
+	// Switch between pages of the application using the buttons on the left of the window.
+	
 	public void btnHome(ActionEvent e) throws IOException, SQLException{
-		try {
-			if ( currPage != Page.HOME) {
-				homeController.loadCategoryPie();
-				homeController.updateRecentTrans();
-				contentArea.getChildren().removeAll();
-				contentArea.getChildren().setAll(this.homeRoot);
-				currPage = Page.HOME;
-				setButton(btnHome);
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		if ( currPage != Page.HOME) {
+			homeController.updateRecentTrans(); // Ensure Recent Transactions are up to date when clicking back to Home page.
+			homeController.loadCategoryPie(); // Ensure Categorical Pie Chart is up to date with most recent transactions.
+			contentArea.getChildren().removeAll();
+			contentArea.getChildren().setAll(this.homeRoot);
+			currPage = Page.HOME;
+			setButton(btnHome);
 		}
 	}
 	
@@ -109,19 +106,19 @@ public class MainController implements Initializable{
 	
 	public void setModel(Model m) throws SQLException {
 		this.model = m;
-		if(this.homeController != null) {//Set The Home controller's Database model And set Observers
+		if(this.homeController != null) {//Set The Home controller's local Database model And set Observers
 			this.homeController.setModel(m);
 			this.model.attachObserver(homeController);
-		}if(this.expenseController != null) {//Set The Expense controller's Database model
+		}if(this.expenseController != null) {//Set The Expense controller's local Database model
 			this.expenseController.setModel(m);
 			this.model.attachObserver(expenseController);
-		}if(this.incomeController != null) {//Set The Income controller's Database model
+		}if(this.incomeController != null) {//Set The Income controller's local Database model
 			this.incomeController.setModel(m);
 			this.model.attachObserver(incomeController);
-		}if(this.transactionController != null) {//Set The Transactions controller's Database model
+		}if(this.transactionController != null) {//Set The Transactions controller's local Database model
 			this.transactionController.setModel(m);
 			this.model.attachObserver(transactionController);
-		}if (this.summaryController != null) { // Set the Summary Controller's Database model
+		}if (this.summaryController != null) { // Set the Summary Controller's local Database model
 			this.summaryController.setModel(m);
 			this.model.attachObserver(summaryController);
 		}
@@ -170,6 +167,8 @@ public class MainController implements Initializable{
 		} catch(Exception e) {System.out.println(e);}
 	
 	}
+	
+	// Initialize the main window, set the initial page and layout its elements.
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

@@ -347,9 +347,9 @@ public class IncomeController implements View, Initializable{
 		}
 	}
 
+	
 	@Override
 	public void update() {
 		incomeTreeTableView.refresh();
 	}
-
 }

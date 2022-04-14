@@ -17,7 +17,7 @@
                   <Insets left="5.0" />
                </HBox.margin>
             </ImageView>
-            <VBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="47.0" prefWidth="121.0" spacing="5.0">
+            <VBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="45.0" prefWidth="102.0" spacing="5.0">
                <children>
                   <Label fx:id="transactionTitle" text="Transaction Title">
                      <font>
@@ -30,7 +30,7 @@
                   <Insets />
                </HBox.margin>
             </VBox>
-            <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="47.0" prefWidth="65.0">
+            <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="47.0" prefWidth="64.0">
                <children>
                   <VBox alignment="CENTER_RIGHT" spacing="5.0">
                      <children>

@@ -29,7 +29,6 @@ public class Model {
 		return false;
 	}
 
-
 	public Category getCategoryWithName(String c) {
 		for(Category el: this.categories) {
 			if(el.getName() == c) {
@@ -84,7 +83,7 @@ public class Model {
 				el.addTransaction(newTransaction);
 			}
 		}
-		// DBConn.AddTransToDB(newTransaction, c, sc); // Add the transaction to the SQL database for long-term storage.
+		// The transaction is added to the SQL Database in the HomeController's addTransaction() call.
 		this.notifyObservers();
 	}
 	
@@ -149,7 +148,6 @@ public class Model {
 					}		
 				}
 			}
-		
 		return total;
 	}
 	
@@ -161,11 +159,10 @@ public class Model {
 		Observers.remove(o);
 	}
 	
+	// Call the individually defined update() subroutines for each controller to keep them up to date with the model.
 	public void notifyObservers() {
 		for (View Observer: Observers) {
 			Observer.update();
 		}
 	}	
-	
-	
 }

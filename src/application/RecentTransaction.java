@@ -9,7 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+
 public class RecentTransaction extends AnchorPane {
+	
+	// RecentTransaction objects visually represent the items in the Recent Transactions list on the home page.
 
 	@FXML
 	Label transactionTitle, transactionType, transactionAmmount, transactionDate;

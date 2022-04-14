@@ -12,6 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class TransactionItem extends AnchorPane{
+	
+	// TransactionItem objects visually represent the items in the Transactions page.
+	
 	@FXML
 	CheckBox transactionCheck;
 	@FXML

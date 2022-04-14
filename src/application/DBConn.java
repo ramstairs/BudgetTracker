@@ -34,7 +34,7 @@ public class DBConn {
 			}
 		}
 		
-		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
+		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the Income, Expense, & Transactions page controllers.
 		public static void FetchTransactions(ExpenseController expCon, IncomeController incCon, TransactionsController transCon) throws SQLException {
 			System.out.println("Fetching Transactions from database...");
 			
@@ -69,39 +69,6 @@ public class DBConn {
 			}
 		}
 		
-//		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
-//		public static void PopulateModel(Model m) throws SQLException {
-//			System.out.println("Fetching Transactions from database...");
-//			
-//			Statement st = DBConn.getConn().createStatement(); // Allows us to specify a command to the database in a string with SQL language, then execute it.
-//			
-//			// Select the Transactions table in its entirety and put the results in ResultSet res.
-//			// Using the .executeQuery("SQL commands...") on our Statement st, we send an SQL command or "query" to the database.
-//			ResultSet res = st.executeQuery("SELECT * FROM TRANSACTIONS");
-//			
-//			while (res.next()) { // Loop through all of the rows in the ResultSet taken from the table... (1 row = 1 transaction)
-//				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
-//				
-//				String title = res.getString("Name"); 
-//				int price = (int) Math.round(res.getDouble("Transval"));
-//				Date sqldate = res.getDate("Date"); // sql.Date data type which is used by the database.
-//				LocalDate date = sqldate.toLocalDate(); // LocalDate which is used in our application.
-//				String category = res.getString("Category");
-//				String subcategory = res.getString("Subcategory");
-//				String transType = res.getString("TransactionType");
-//				
-//				// Add the transaction to the model.
-//				if (transType.equals("EXPENSE")) {
-//					Transaction newTrans = new Transaction(title, price, date, TransactionType.EXPENSE); 
-//					m.addTransaction(category, subcategory, newTrans);
-//				}
-//				else if (transType.equals("INCOME")) {
-//					Transaction newTrans = new Transaction(title, price, date, TransactionType.INCOME);
-//					m.addTransaction(category, subcategory, newTrans);
-//				}		
-//			}
-//		}
-		
 		// Fetches all transactions from the btBeta.mv.db database file's "Transactions" table, adds them to the current application instance's Income, Expense, & Transactions pages.
 		public static ArrayList<RecentTransaction> FetchRecents(Boolean expensesOnly) throws SQLException {
 			ArrayList<RecentTransaction> recents = new ArrayList<RecentTransaction>() ;
@@ -111,7 +78,6 @@ public class DBConn {
 			ResultSet res = st.executeQuery("SELECT * FROM TRANSACTIONS ORDER BY TransID DESC");
 			
 			int count = 1;
-				
 			
 			while (res.next() && count <= 10) { // Loop through all of the rows in the ResultSet taken from the table... (1 row = 1 transaction)
 				// res is equivalent to a row of the table, res.getDATA("Example") gives us the data stored in column "Example", of data type DATA, at the current row res.
@@ -124,13 +90,13 @@ public class DBConn {
 				String category = res.getString("Category");
 				String transType = res.getString("TransactionType");
 				
+				// If the transaction was an expense, add it to the recent list and increment count.
 				if (transType.equals("EXPENSE")) {
 					recents.add(new RecentTransaction(title, category, TransactionType.EXPENSE, strPrice, date));
-					
-					if (expensesOnly)
-						count += 1;
+					count += 1;
 				}
 				
+				// If it was an income and were not just looking for expenses (filling out pie chart categories), add to recents and increment count.
 				else if (transType.equals("INCOME") && (!expensesOnly)) {
 					recents.add(new RecentTransaction(title, category, TransactionType.INCOME, strPrice, date));
 					count += 1;
@@ -139,8 +105,6 @@ public class DBConn {
 			
 			return recents;
 		}
-		
-		
 		
 		// Fetches the Budget that was set for the month passed in.
 		// Used in setting the Budget text field in initialization of the Home Page in the HomeController.
@@ -176,7 +140,7 @@ public class DBConn {
 			}
 		}
 		
-		// Adds a new transaction to the MySQL Database in the table of transactions.
+		// Adds a new transaction to the SQL database file in it's table of transactions.
 		public static void AddTransToDB(Transaction trans, String category, String subcategory) throws SQLException {
 			try {
 				String query = "insert into transactions (Name, Transval, Date, Category, Subcategory, TransactionType)" + " values (?, ?, ?, ?, ?, ?)"; // Formatted query, each ? represents a column's value for a single row.
@@ -188,7 +152,7 @@ public class DBConn {
 				st.setString(5, subcategory);
 				st.setString(6, trans.getTransType());
 				
-				st.execute(); // Execute the preparedStatement (send the data to the newest row of the Transactions table).
+				st.execute();
 				
 			} catch (SQLException e) { 
 			

@@ -57,7 +57,7 @@ public class SummaryController implements View, Initializable {
 		income.getData().clear();
 		transactionLineChart.getData().clear();
 		
-		for (int i = 1; i <= 12; i++)
+		for (int i = 1; i <= 12; i++) // For every month, add its String name and Double value to the expense/income series.
 		{
 			expenses.getData().addAll(new Data<String, Number>(Month.of(i).getDisplayName(TextStyle.SHORT, Locale.ENGLISH), model.getTotalForMonth(i, true)));
 			income.getData().addAll(new Data<String, Number>(Month.of(i).getDisplayName(TextStyle.SHORT, Locale.ENGLISH), model.getTotalForMonth(i, false)));
@@ -66,12 +66,12 @@ public class SummaryController implements View, Initializable {
 		expenses.setName("Expenses");
 		income.setName("Income");
 		
-		// Add both line plots to the chart after clearing its data.
+		// Add the data series to the line chart to create a line for both Expenses and Income.
 		transactionLineChart.getData().addAll(expenses, income);
-		//transactionLineChart.setLegendVisible(true);
+		transactionLineChart.layout();
 		
 	}
-	// Bar chart of expenditure (specifically, doesn't include income) in each category throughout the year.
+	// Bar chart of expenditure (exclusively displays expenditure, not income) in each category throughout the year.
 	private void populateBarChart() {
 		
 		categoryTotal = new NumberAxis(0, 10000, 200);
@@ -83,7 +83,7 @@ public class SummaryController implements View, Initializable {
 		
 		for (Category c : model.getCategories())
 		{
-			for (String s : expenseCategoryList) { // Only allow expense categorys to populate the bar chart ( removes income categories with val = 0.0.
+			for (String s : expenseCategoryList) { // Only allow expense categories to populate the bar chart.
 				if (c.getName().equals(s));
 					expenditure.getData().add(new XYChart.Data<String, Number>(c.getName(), model.getTotalForCategory(c)));
 			}
@@ -94,6 +94,7 @@ public class SummaryController implements View, Initializable {
 		// Add the expenditure series to the bar chart after clearing its data.
 		categoryBarChart.getData().clear();
 		categoryBarChart.getData().addAll(expenditure);	
+		categoryBarChart.layout();
 	}
 	
 	
@@ -101,8 +102,6 @@ public class SummaryController implements View, Initializable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
-//		System.out.println("updating charts via notifyObservers");
 		populateLineChart();
 		populateBarChart();
 	}
@@ -111,25 +110,17 @@ public class SummaryController implements View, Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
-//		monthName = new CategoryAxis();
-//		monthName.setLabel("Month");
-//		monthlyTotal = new NumberAxis(0, 2000, 100); // y limits [$0 -> 150% x $(total spent annually)].
-//		monthlyTotal.setLabel("$ Amount");
-//		transactionLineChart = new LineChart<String, Number>(monthName, monthlyTotal); // Month as x-axis, month's total as y-axis.
-		
-		XYChart.Series<String, Number> expenses = new XYChart.Series<String, Number>();
+		// Initialize the LineChart of Monthly expenses/income.
+		XYChart.Series<String, Number> expenses = new XYChart.Series<String, Number>(); 
 		XYChart.Series<String, Number> income = new XYChart.Series<String, Number>();
-		
 		transactionLineChart.getData().addAll(expenses, income);
+		categoryBarChart.layout();
 		
-		
-//		categoryTotal = new NumberAxis(0, 10000, 200);
-//		categoryTotal.setLabel("$ Amount");
-//		categoryName = new CategoryAxis();
-//		categoryName.setLabel("Category");
-		
+		// Initialize the BarChart of categorical expenditure.
 		XYChart.Series<String, Number> expenditure = new XYChart.Series<String, Number>();
 		categoryBarChart.getData().addAll(expenditure);
+		categoryBarChart.layout();
+		categoryBarChart.getXAxis().setAnimated(false);
 		categoryBarChart.setCategoryGap(20);
 	}
 }
